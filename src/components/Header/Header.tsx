@@ -1,9 +1,6 @@
 import React from "react";
 import styles from "./Header.module.scss";
-import { useEthers, useEtherBalance } from "@usedapp/core";
-
-// Regular import crashes the app with "Buffer is not defined" error.
-import WalletConnectProvider from "@walletconnect/web3-provider";
+import { ConnectButton, useAccount } from "@web3modal/react";
 
 const navItems = [
   { name: "Exotic Cars", path: "exotic-cars" },
@@ -15,23 +12,7 @@ const navItems = [
   { name: "Contact Us", path: "contact-us" },
 ];
 export const Header: React.FC = () => {
-  const { account, activate, deactivate, chainId } = useEthers();
-  const etherBalance = useEtherBalance(account);
-  // if (!config.readOnlyUrls[chainId]) {
-  //   return <p>Please use either Mainnet or Goerli testnet.</p>;
-  // }
-
-  // async function onConnect() {
-  //   try {
-  //     const provider = new WalletConnectProvider({
-  //       infuraId: "d8df2cb7844e4a54ab0a782f608749dd",
-  //     });
-  //     await provider.enable();
-  //     await activate(provider);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
+  const { connected, address } = useAccount();
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -45,12 +26,10 @@ export const Header: React.FC = () => {
           })}
         </ul>
 
-        <button
-          className={styles.web3Button}
-          // onClick={onConnect}
-        >
+        {/* <button className={styles.web3Button} onClick={onConnect}>
           Connect Wallet
-        </button>
+        </button> */}
+        {connected ? <h1>{address ? address : "none"} </h1> : <ConnectButton />}
       </nav>
     </header>
   );
