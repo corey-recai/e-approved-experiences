@@ -43,13 +43,13 @@ class User(db.Model):
         )
 
 
-class Booking(db.Model):
+class carBooking(db.Model):
     """ 
-        Booking Model.
+        Car Booking Model.
         The model corresponds to the bookings table in database.
     """
-    __tablename__ = "bookings"
-    bookingid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    __tablename__ = "Car bookings"
+    carbookingid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
     carid = db.Column(db.Integer, db.ForeignKey('cars.carid'))
     fromdate = db.Column(db.DateTime)
@@ -59,10 +59,68 @@ class Booking(db.Model):
     caleventid = db.Column(db.String(255))
 
     def __repr__(self):
-        return "<Booking(bookingid='%s', userid='%s', carid='%s', fromdate='%s', todate='%s', isactive='%s')>" % (
+        return "<carBooking(bookingid='%s', userid='%s', carid='%s', fromdate='%s', todate='%s', isactive='%s')>" % (
             self.bookingid, self.userid, self.carid, self.fromdate, self.todate, self.isactive
         )
+class jetBooking(db.Model):
+    """ 
+        Jet Booking Model.
+        The model corresponds to the bookings table in database.
+    """
+    __tablename__ = "Jet bookings"
+    jetbookingid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
+    jetid = db.Column(db.Integer, db.ForeignKey('cars.carid'))
+    fromdate = db.Column(db.DateTime)
+    todate = db.Column(db.DateTime)
+    isactive = db.Column(db.Boolean, default=True)
+    total = db.Column(db.Float)
+    caleventid = db.Column(db.String(255))
 
+    def __repr__(self):
+        return "<jetBooking(bookingid='%s', userid='%s', jetid='%s', fromdate='%s', todate='%s', isactive='%s')>" % (
+            self.bookingid, self.userid, self.jetid, self.fromdate, self.todate, self.isactive
+        )
+
+class villaBooking(db.Model):
+    """ 
+        Booking Model.
+        The model corresponds to the bookings table in database.
+    """
+    __tablename__ = "Villa Bookings"
+    carbookingid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
+    villaid = db.Column(db.Integer, db.ForeignKey('cars.carid'))
+    fromdate = db.Column(db.DateTime)
+    todate = db.Column(db.DateTime)
+    isactive = db.Column(db.Boolean, default=True)
+    total = db.Column(db.Float)
+    caleventid = db.Column(db.String(255))
+
+    def __repr__(self):
+        return "<villaBooking(bookingid='%s', userid='%s', villaid='%s', fromdate='%s', todate='%s', isactive='%s')>" % (
+            self.bookingid, self.userid, self.villaid, self.fromdate, self.todate, self.isactive
+        )
+
+class yachtBooking(db.Model):
+    """ 
+        Yacht Booking Model.
+        The model corresponds to the bookings table in database.
+    """
+    __tablename__ = "Villa Bookings"
+    yachtbookingid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
+    yachtid = db.Column(db.Integer, db.ForeignKey('cars.carid'))
+    fromdate = db.Column(db.DateTime)
+    todate = db.Column(db.DateTime)
+    isactive = db.Column(db.Boolean, default=True)
+    total = db.Column(db.Float)
+    caleventid = db.Column(db.String(255))
+
+    def __repr__(self):
+        return "<yachtBooking(bookingid='%s', userid='%s', yachtid='%s', fromdate='%s', todate='%s', isactive='%s')>" % (
+            self.bookingid, self.userid, self.yachtid, self.fromdate, self.todate, self.isactive
+        )
 
 class Car(db.Model):
     """
@@ -71,7 +129,7 @@ class Car(db.Model):
     """
     __tablename__ = "cars"
     __searchable__ = ['make', 'bodytype',
-                      'color', 'seats', 'seats', 'costperhour']
+                      'color', 'seats', 'location', 'costperhour']
     carid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     make = db.Column(db.String(100))
     bodytype = db.Column(db.String(50))
@@ -86,6 +144,79 @@ class Car(db.Model):
     def __repr__(self):
         return "<Car(carid='%s', make='%s', bodytype='%s', color='%s', seats='%s', location='%s', costperhour='%s', isavailable='%s')>" % (
             self.carid, self.make, self.bodytype, self.color, self.seats, self.location, self.costperhour, self.isavailable
+        )
+
+class Jet(db.Model):
+    """
+        Jet Model.
+        The model corresponds to the Jet table in database.
+    """
+    __tablename__ = "jets"
+    __searchable__ = ['make', 'jetsize',
+                      'color', 'seats', 'location', 'flatfee']
+    jetid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    make = db.Column(db.String(100))
+    jetsize = db.Column(db.String(50))
+    color = db.Column(db.String(100))
+    seats = db.Column(db.Integer)
+    location = db.Column(db.String(255))
+    flatfee= db.Column(db.Float)
+    isavailable = db.Column(db.Boolean, default=True)
+    bookings = db.relationship('Booking', backref='jet')
+    reportedissues = db.relationship('Reportjet', backref='jet')
+
+    def __repr__(self):
+        return "<Jet(jetid='%s', make='%s', jetsize='%s', color='%s', seats='%s', location='%s', flatfee='%s', isavailable='%s')>" % (
+            self.jetid, self.make, self.jetsize, self.color, self.seats, self.location, self.flatfee, self.isavailable
+        )
+
+class Villa(db.Model):
+    """
+        Villa Model.
+        The model corresponds to the Villa table in database.
+    """
+    __tablename__ = "villas"
+    __searchable__ = ['rooms', 'bathrooms',
+                      'propertytype', 'pool', 'location', 'costperday']
+    villaid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    rooms = db.Column(db.String(100))
+    bathrooms = db.Column(db.String(50))
+    propertytype = db.Column(db.String(100))
+    pool = db.Column(db.Boolean, default=True)
+    location = db.Column(db.String(255))
+    costperday= db.Column(db.Float)
+    isavailable = db.Column(db.Boolean, default=True)
+    bookings = db.relationship('Booking', backref='villa')
+    reportedissues = db.relationship('Reportvilla', backref='villa')
+
+    def __repr__(self):
+        return "<Villa(villaid='%s', rooms='%s', bathrooms='%s', propertytype='%s', pool='%s', location='%s', costperday='%s', isavailable='%s')>" % (
+            self.villaid, self.rooms, self.bathrooms, self.propertytype, self.pool, self.location, self.costperday, self.isavailable
+        )
+
+class Yacht(db.Model):
+    """
+        Yacht Model.
+        The model corresponds to the Villa table in database.
+    """
+    __tablename__ = "villas"
+    __searchable__ = ['cabins', 'bathrooms',
+                      'length', 'amenities', 'location', 'costperday', 'costper8hours']
+    yachtid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    cabins = db.Column(db.String(100))
+    bathrooms = db.Column(db.String(50))
+    length = db.Column(db.String(100))
+    amenities = db.Column(db.Boolean, default=True)
+    location = db.Column(db.String(255))
+    costperday= db.Column(db.Float)
+    costper8hours = db.Column(db.Float)
+    isavailable = db.Column(db.Boolean, default=True)
+    bookings = db.relationship('Booking', backref='yacht')
+    reportedissues = db.relationship('Reportyacht', backref='yacht')
+
+    def __repr__(self):
+        return "<Yacht(yachtid='%s', cabins='%s', bathrooms='%s', length='%s', amenities='%s', location='%s', costperday='%s', costper8hours='%s', isavailable='%s')>" % (
+            self.yachtid, self.cabins, self.bathrooms, self.length, self.amenities, self.location, self.costperday, self.costper8hours, self.isavailable
         )
 
 class Reportcar(db.Model):
@@ -106,9 +237,62 @@ class Reportcar(db.Model):
         return "<Reportcar(reportid='%s', carid='%s', userid='%s', issue='%s', reportdate='%s', status='%s')>" % (
             self.reportid, self.carid, self.userid, self.issue, self.reportdate, self.status
         )
-    
 
-# schema of booking with nested car object
+class Reportjet(db.Model):
+    """
+        Reportjet Model.
+        The model corresponds to the reportjets table in database.
+    """
+    __tablename__ = "reportjets"
+    reportid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    jetid = db.Column(db.Integer, db.ForeignKey('jets.jetid'))
+    userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
+    issue = db.Column(db.String(225))
+    reportdate = db.Column(db.DateTime)
+    status = db.Column(db.String(45))
+
+    def __repr__(self):
+        return "<Reportjet(reportid='%s', jetid='%s', userid='%s', issue='%s', reportdate='%s', status='%s')>" % (
+            self.reportid, self.jetid, self.userid, self.issue, self.reportdate, self.status
+        ) 
+
+class Reportvilla(db.Model):
+    """
+        Reportvilla Model.
+        The model corresponds to the reportvillas table in database.
+    """
+    __tablename__ = "reportvillas"
+    reportid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    villaid = db.Column(db.Integer, db.ForeignKey('villas.villaid'))
+    userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
+    issue = db.Column(db.String(225))
+    reportdate = db.Column(db.DateTime)
+    status = db.Column(db.String(45))
+
+    def __repr__(self):
+        return "<Reportvilla(reportid='%s', villaid='%s', userid='%s', issue='%s', reportdate='%s', status='%s')>" % (
+            self.reportid, self.villaid, self.userid, self.issue, self.reportdate, self.status
+        ) 
+
+class Reportyacht(db.Model):
+    """
+        Reportyacht Model.
+        The model corresponds to the reportyachts table in database.
+    """
+    __tablename__ = "reportyachts"
+    reportid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    yachtid = db.Column(db.Integer, db.ForeignKey('yachts.yachtid'))
+    userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
+    issue = db.Column(db.String(225))
+    reportdate = db.Column(db.DateTime)
+    status = db.Column(db.String(45))
+
+    def __repr__(self):
+        return "<Reportyacht(reportid='%s', yachtid='%s', userid='%s', issue='%s', reportdate='%s', status='%s')>" % (
+            self.reportid, self.yachtid, self.userid, self.issue, self.reportdate, self.status
+        ) 
+
+# schema of booking with nested car, villa, jet, yacht object
 class ReportcarSchema(ma.Schema):
     """Reportcars Schema.
        The list of attributes to be displayed from the Reportcars Model as a response.
@@ -118,8 +302,44 @@ class ReportcarSchema(ma.Schema):
         # Fields to expose.
         fields = ("reportid", "carid", "userid", "issue", "status", "reportdate")
 
+class ReportjetSchema(ma.Schema):
+    """Reportcars Schema.
+       The list of attributes to be displayed from the Reportjets Model as a response.
+    """ 
+    class Meta:
+        model = Reportjet
+        # Fields to expose.
+        fields = ("reportid", "jetid", "userid", "issue", "status", "reportdate")
+
+class ReportvillaSchema(ma.Schema):
+    """Reportvillas Schema.
+       The list of attributes to be displayed from the Reportvillas Model as a response.
+    """ 
+    class Meta:
+        model = Reportvilla
+        # Fields to expose.
+        fields = ("reportid", "villaid", "userid", "issue", "status", "reportdate")
+
+class ReportyachtSchema(ma.Schema):
+    """Reportcars Schema.
+       The list of attributes to be displayed from the Reportyachts Model as a response.
+    """ 
+    class Meta:
+        model = Reportyacht
+        # Fields to expose.
+        fields = ("reportid", "yachtid", "userid", "issue", "status", "reportdate")
+
 reportcarSchema = ReportcarSchema()
 reportcarsSchema = ReportcarSchema(many=True)
+
+reportjetSchema = ReportjetSchema()
+reportjetsSchema = ReportjetsSchema(many=True)
+
+reportvillaSchema = ReportvillaSchema()
+reportvillasSchema = ReportvillaSchema(many=True)
+
+reportyachtSchema = ReportyachtSchema()
+reportyachtsSchema = ReportyachtSchema(many=True)
 
 class UserSchema(ma.Schema):
     """User Schema.
@@ -134,7 +354,7 @@ class UserSchema(ma.Schema):
 userSchema = UserSchema()
 usersSchema = UserSchema(many=True)
 
-
+# Car, Jet, Villa, Yacht Schema (Tyler Add in Schema for Jet, Villas, and Yacht)
 class CarSchema(ma.Schema):
     """Car Schema.
        The list of attributes to be displayed from the Car Model as a response.
@@ -149,6 +369,47 @@ class CarSchema(ma.Schema):
 carSchema = CarSchema()
 carsSchema = CarSchema(many=True)
 
+class JetSchema(ma.Schema):
+    """Jet Schema.
+       The list of attributes to be displayed from the Car Model as a response.
+    """ 
+    class Meta:
+        model = Jet
+        # Fields to expose.
+        fields = ("carid", 'make', 'jetsize', 'color', 
+                    'seats', 'location', 'flatfee', "isavailable")
+
+
+jetSchema = JetSchema()
+jetsSchema = JetSchema(many=True)
+
+class VillaSchema(ma.Schema):
+    """Villa Schema.
+       The list of attributes to be displayed from the Villa Model as a response.
+    """ 
+    class Meta:
+        model = Villa
+        # Fields to expose.
+        fields = ('villaid', 'rooms', 'bathrooms', 'propertytype', 
+                  'pool', 'location', 'costperday', 'isavailable')
+
+
+villaSchema = VillaSchema()
+villasSchema = VillaSchema(many=True)
+
+class YachtSchema(ma.Schema):
+    """Yacht Schema.
+       The list of attributes to be displayed from the Yacht Model as a response.
+    """ 
+    class Meta:
+        model = Yacht
+        # Fields to expose.
+        fields = ('yachtid', 'cabins', 'bathrooms', 'length', 
+                    'amenities', 'location', 'costperday', 'costper8hours', 'isavailable')
+
+
+yachtSchema = YachtSchema()
+yachtsSchema = YachtSchema(many=True)
 
 # schema of booking with nested car object
 class BookingSchema(ma.Schema):
