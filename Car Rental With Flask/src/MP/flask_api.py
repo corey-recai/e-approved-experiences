@@ -56,11 +56,14 @@ class carBooking(db.Model):
     fromdate = db.Column(db.DateTime)
     todate = db.Column(db.DateTime)
     isactive = db.Column(db.Boolean, default=True)
+    rentaltype = db.Column(db.String(255))
     total = db.Column(db.Float)
     caleventid = db.Column(db.String(255))
+    
+    rentaltype = 'car'
 
     def __repr__(self):
-        return "<carBooking(bookingid='%s', userid='%s', carid='%s', fromdate='%s', todate='%s', isactive='%s')>" % (
+        return "<carBooking(bookingid='%s', userid='%s', carid='%s', fromdate='%s', todate='%s', isactive='%s', rentaltype='%s')>" % (
             self.bookingid, self.userid, self.carid, self.fromdate, self.todate, self.isactive
         )
 class jetBooking(db.Model):
@@ -71,12 +74,13 @@ class jetBooking(db.Model):
     __tablename__ = "Jet bookings"
     jetbookingid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
-    jetid = db.Column(db.Integer, db.ForeignKey('cars.carid'))
+    jetid = db.Column(db.Integer, db.ForeignKey('jets.jetid'))
     fromdate = db.Column(db.DateTime)
     todate = db.Column(db.DateTime)
     isactive = db.Column(db.Boolean, default=True)
     total = db.Column(db.Float)
     caleventid = db.Column(db.String(255))
+
 
     def __repr__(self):
         return "<jetBooking(bookingid='%s', userid='%s', jetid='%s', fromdate='%s', todate='%s', isactive='%s')>" % (
@@ -91,12 +95,13 @@ class villaBooking(db.Model):
     __tablename__ = "Villa Bookings"
     carbookingid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
-    villaid = db.Column(db.Integer, db.ForeignKey('cars.carid'))
+    villaid = db.Column(db.Integer, db.ForeignKey('villas.villaid'))
     fromdate = db.Column(db.DateTime)
     todate = db.Column(db.DateTime)
     isactive = db.Column(db.Boolean, default=True)
     total = db.Column(db.Float)
     caleventid = db.Column(db.String(255))
+
 
     def __repr__(self):
         return "<villaBooking(bookingid='%s', userid='%s', villaid='%s', fromdate='%s', todate='%s', isactive='%s')>" % (
@@ -111,7 +116,7 @@ class yachtBooking(db.Model):
     __tablename__ = "Villa Bookings"
     yachtbookingid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
-    yachtid = db.Column(db.Integer, db.ForeignKey('cars.carid'))
+    yachtid = db.Column(db.Integer, db.ForeignKey('yacht.yachtid'))
     fromdate = db.Column(db.DateTime)
     todate = db.Column(db.DateTime)
     isactive = db.Column(db.Boolean, default=True)
@@ -421,8 +426,8 @@ yachtsSchema = YachtSchema(many=True)
 # Tyler Add in new Schemas for all rental types
 
 # schema of booking with nested car, yacht, villa, jets object
-class BookingSchema(ma.Schema):
-    """Booking Schema.
+class carBookingSchema(ma.Schema):
+    """Car Booking Schema.
        The list of attributes to be displayed from the Booking Model as a response.
     """ 
     class Meta:
@@ -433,15 +438,53 @@ class BookingSchema(ma.Schema):
     car = ma.Nested(CarSchema)
 
 
-bookingSchema = BookingSchema()
-bookingsSchema = BookingSchema(many=True)
+carbookingSchema = carBookingSchema()
+carbookingsSchema = carBookingSchema(many=True)
+
+class jetBookingSchema(ma.Schema):
+    """Jet Booking Schema.
+       The list of attributes to be displayed from the Booking Model as a response.
+    """ 
+    class Meta:
+        model = Booking
+        # Fields to expose.
+        fields = ("bookingid", "userid", "jetid", "fromdate",
+                  "todate", "isactive", "total", "jet")
+    jet = ma.Nested(JetSchema)
 
 
+jetbookingSchema = jetBookingSchema()
+jetbookingsSchema = jetBookingSchema(many=True)
+
+class villaBookingSchema(ma.Schema):
+    """Jet Booking Schema.
+       The list of attributes to be displayed from the Booking Model as a response.
+    """ 
+    class Meta:
+        model = Booking
+        # Fields to expose.
+        fields = ("bookingid", "userid", "villaid", "fromdate",
+                  "todate", "isactive", "total", "villa")
+    villa = ma.Nested(villaSchema)
 
 
-bookingSchema = BookingSchema()
-bookingsSchema = BookingSchema(many=True)
+yachtbookingSchema = villaBookingSchema()
+yachtbookingsSchema = villaBookingSchema(many=True)
 
+class yachtookingSchema(ma.Schema):
+    """Jet Booking Schema.
+       The list of attributes to be displayed from the Booking Model as a response.
+    """ 
+    class Meta:
+        model = Booking
+        # Fields to expose.
+        fields = ("bookingid", "userid", "yachtid", "fromdate",
+                  "todate", "isactive", "total", "yacht")
+    villa = ma.Nested(villaSchema)
+
+
+yachtbookingSchema = yachtBookingSchema()
+yachtbookingsSchema = yachtBookingSchema(many=True)
 
 # """
 # Endpoint to verify login
