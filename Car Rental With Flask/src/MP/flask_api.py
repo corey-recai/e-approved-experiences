@@ -468,10 +468,10 @@ class villaBookingSchema(ma.Schema):
     villa = ma.Nested(villaSchema)
 
 
-yachtbookingSchema = villaBookingSchema()
-yachtbookingsSchema = villaBookingSchema(many=True)
+villabookingSchema = villaBookingSchema()
+villabookingsSchema = villaBookingSchema(many=True)
 
-class yachtookingSchema(ma.Schema):
+class yachtBookingSchema(ma.Schema):
     """Yacht Booking Schema.
        The list of attributes to be displayed from the Booking Model as a response.
     """ 
