@@ -457,7 +457,7 @@ jetbookingSchema = jetBookingSchema()
 jetbookingsSchema = jetBookingSchema(many=True)
 
 class villaBookingSchema(ma.Schema):
-    """Jet Booking Schema.
+    """Villa Booking Schema.
        The list of attributes to be displayed from the Booking Model as a response.
     """ 
     class Meta:
@@ -472,7 +472,7 @@ yachtbookingSchema = villaBookingSchema()
 yachtbookingsSchema = villaBookingSchema(many=True)
 
 class yachtookingSchema(ma.Schema):
-    """Jet Booking Schema.
+    """Yacht Booking Schema.
        The list of attributes to be displayed from the Booking Model as a response.
     """ 
     class Meta:
