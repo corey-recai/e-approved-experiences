@@ -16,7 +16,7 @@ from voice_rec import voice_rec
 app = Flask(__name__)
 api = Blueprint("api", __name__)
 
-db = SQLAlchemy()
+db = SQLAlchemy()Sm
 ma = Marshmallow()
 
 
