@@ -41,7 +41,7 @@ contract CarChain {
 
     // Rent Car
     function RentOut(address walletAddress) public {
-        require(renters[walletAddress].due == 0, "You have a pending balance.");
+        require(renters[walletAddress].due == 0, "You have a pending balance."); // Can't checkout unless balance is paid.
         require(renters[walletAddress].canRent == true, "You cannot rent at this time.");
         renters[walletAddress].active = true;
         renters[walletAddress].start = block.timestamp; // Unix Timestamp in Uint is marked in start variable
@@ -93,26 +93,35 @@ contract CarChain {
         return renters[walletAddress].balance;
     }
 
-    // Set Due amount (Yachts are by 4 / 6 / 8 Hourse and Days)
-    function setDue(address walletAddress) internal { // Internal won't let anyone else change or modify the function.
-        uint timespan= getTotalDurationDays(walletAddress);
+    // Set Due amount hourly (Yachts are by 4 / 6 / 8 Hourse and Days).  Will need functions and if statements based on Hours or Day for Yachts.
+    function setDueHourly(address walletAddress, uint amountPerHour) internal { // Internal won't let anyone else change or modify the function.
         uint hourlytimespan = getTotalDurationHours(walletAddress);
-        renters[walletAddress].due = hourlyIncrements * 5000000000000000;
+        renters[walletAddress].due = hourlytimespan * amountPerHour; // Multiply Hourly Timespan * amount per hour.  Check if hourly rate is different by amount of hours and days.
     }
 
+    // Set Due amount Daily (Yachts are by 4 / 6 / 8 Hourse and Days).  Will need functions and if statements based on Hours or Day for Yachts.
+    function setDue(address walletAddress, uint amountPerDay) internal { // Internal won't let anyone else change or modify the function.
+        uint timespanDays= getTotalDurationDays(walletAddress);
+        renters[walletAddress].due = timespanDays * amountPerDay; // Multiply Hourly Timespan * amount per hour.  Check if hourly rate is different by amount of hours and days.
+    }
+
+    // Hourly and Daily rates will be in Python Dictionary
+
+
+    // True or False if renter can rent car or not.  (Variable above for canRent)
     function canRentCar(address walletAddress) public view returns(bool) {
         return renters[walletAddress].canRent;
     }
 
     // Deposit
     function deposit(address walletAddress) payable public {
-        renters[walletAddress].balance += msg.value;
+        renters[walletAddress].balance += msg.value; // Value will be picked up in the global msg.value
     }
 
     // Make Payment
     function makePayment(address walletAddress) payable public {
-        require(renters[walletAddress].due > 0, "You do not have anything due at this time.");
-        require(renters[walletAddress].balance > msg.value, "You do not have enough funds to cover payment. Please make a deposit.");
+        require(renters[walletAddress].due > 0, "You do not have anything due at this time."); // Don't want people paying anything if they don't owe.
+        require(renters[walletAddress].balance > msg.value, "You do not have enough funds to cover payment. Please make a deposit."); // Have to deposit money and then transfer as funds
         renters[walletAddress].balance -= msg.value;
         renters[walletAddress].canRent = true;
         renters[walletAddress].due = 0;
