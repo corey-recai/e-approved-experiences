@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import SignClient from "@walletconnect/sign-client";
+import { Web3Modal } from "@web3modal/standalone";
+
 import styles from "./Header.module.scss";
-import { ConnectButton, useAccount } from "@web3modal/react";
+
+const web3modal = new Web3Modal({
+  projectId: "d14659d55a7c0cf8badbf6b4f665aa3f",
+});
 
 const navItems = [
   { name: "Exotic Cars", path: "exotic-cars" },
@@ -12,7 +18,46 @@ const navItems = [
   { name: "Contact Us", path: "contact-us" },
 ];
 export const Header: React.FC = () => {
-  const { connected, address } = useAccount();
+  const [signClient, setSignClient] = useState<SignClient | undefined>(
+    undefined
+  );
+
+  // 3. Initialize sign client
+  async function onInitializeSignClient() {
+    const client = await SignClient.init({
+      projectId: "d14659d55a7c0cf8badbf6b4f665aa3f",
+    });
+    setSignClient(client);
+  }
+
+  // 4. Initiate connection and pass pairing uri to the modal
+  async function onOpenModal() {
+    if (signClient) {
+      const namespaces = {
+        eip155: {
+          methods: ["eth_sign"],
+          chains: ["eip155:1"],
+          events: ["accountsChanged"],
+        },
+      };
+      const { uri, approval } = await signClient.connect({
+        requiredNamespaces: namespaces,
+      });
+      if (uri) {
+        web3modal.openModal({
+          uri,
+          standaloneChains: namespaces.eip155.chains,
+        });
+        await approval();
+        web3modal.closeModal();
+      }
+    }
+  }
+
+  useEffect(() => {
+    onInitializeSignClient();
+  }, []);
+
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -26,10 +71,9 @@ export const Header: React.FC = () => {
           })}
         </ul>
 
-        {/* <button className={styles.web3Button} onClick={onConnect}>
-          Connect Wallet
-        </button> */}
-        {connected ? <h1>{address ? address : "none"} </h1> : <ConnectButton />}
+        <button className={styles.web3Button} onClick={onOpenModal}>
+          {signClient ? "Connect Wallet" : "Initializing..."}
+        </button>
       </nav>
     </header>
   );
