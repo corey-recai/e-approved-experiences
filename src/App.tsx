@@ -24,7 +24,7 @@ function App() {
           }
         />
         <Route
-          path='/luxury-yachts'
+          path='luxury-yachts'
           element={
             <ItemPage
               title='Miami &amp; Bahamas Yacht CHARTERS'
@@ -37,7 +37,7 @@ function App() {
           }
         />
         <Route
-          path='/luxury-villas'
+          path='luxury-villas'
           element={
             <ItemPage
               title='Miami Luxury Villa Rentals'
