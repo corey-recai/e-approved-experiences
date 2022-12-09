@@ -1,9 +1,0 @@
-{
-    "car_id": "1",
-    "make": "BMW",
-    "model": "Series 3",
-    "mileage": "500",
-    "color": "red",
-    "seats": "5",
-    "cost_per_hour": "50"
-}
