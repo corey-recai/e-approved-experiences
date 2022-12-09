@@ -9,13 +9,13 @@ const web3modal = new Web3Modal({
 });
 
 const navItems = [
-  { name: "Exotic Cars", path: "exotic-cars" },
-  { name: "Luxury Yachts", path: "luxury-yachts" },
-  { name: "Luxury Villas", path: "luxury-villas" },
-  { name: "Private Jets", path: "private-jets" },
-  { name: "Other Services", path: "other-services" },
-  { name: "About Us", path: "about-us" },
-  { name: "Contact Us", path: "contact-us" },
+  { name: "Exotic Cars", path: "/exotic-cars" },
+  { name: "Luxury Yachts", path: "/luxury-yachts" },
+  { name: "Luxury Villas", path: "/luxury-villas" },
+  { name: "Private Jets", path: "/private-jets" },
+  { name: "Other Services", path: "/other-services" },
+  { name: "About Us", path: "/about-us" },
+  { name: "Contact Us", path: "/contact-us" },
 ];
 export const Header: React.FC = () => {
   const [signClient, setSignClient] = useState<SignClient | undefined>(
@@ -67,7 +67,11 @@ export const Header: React.FC = () => {
         />
         <ul className={styles.navList}>
           {navItems.map(item => {
-            return <li key={item.path}>{item.name} </li>;
+            return (
+              <li key={item.path}>
+                <a href={item.path}>{item.name}</a>
+              </li>
+            );
           })}
         </ul>
 
