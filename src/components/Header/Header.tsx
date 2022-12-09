@@ -9,7 +9,7 @@ const web3modal = new Web3Modal({
 });
 
 const navItems = [
-  { name: "Exotic Cars", path: "/exotic-cars" },
+  { name: "Exotic Cars", path: "/" },
   { name: "Luxury Yachts", path: "/luxury-yachts" },
   { name: "Luxury Villas", path: "/luxury-villas" },
   { name: "Private Jets", path: "/private-jets" },
@@ -76,7 +76,7 @@ export const Header: React.FC = () => {
         </ul>
 
         <button className={styles.web3Button} onClick={onOpenModal}>
-          {signClient ? "Connect Wallet" : "Initializing..."}
+          Connect Wallet
         </button>
       </nav>
     </header>
