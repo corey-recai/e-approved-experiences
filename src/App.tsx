@@ -27,7 +27,7 @@ function App() {
           path='luxury-yachts'
           element={
             <ItemPage
-              title='Miami &amp; Bahamas Yacht CHARTERS'
+              title='Miami &amp; Bahamas Yacht Charters'
               media={{
                 type: "image",
                 link: "https://static.wixstatic.com/media/6da91d_7388e353a8b346168cd9a1e4f9e23afd~mv2.jpg/v1/fill/w_1504,h_399,fp_0.50_0.55,q_85,enc_auto/banner1_1593c2fb-08a8-4f9a-ae3d-c43a6ba987f5.jpg",
