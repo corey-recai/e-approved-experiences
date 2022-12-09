@@ -38,6 +38,11 @@
           text-underline-position: under;
           text-decoration-color: red;
         }
+
+        a {
+          color: inherit;
+          text-decoration: inherit;
+        }
       }
 
       @include media-query(map-get($breakpoints, "tablet")) {

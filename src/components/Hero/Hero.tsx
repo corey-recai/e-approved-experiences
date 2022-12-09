@@ -3,19 +3,20 @@ import styles from "./Hero.module.scss";
 
 interface Props {
   title: string;
+  media: {
+    type: "image" | "video";
+    link: string;
+  };
 }
 
-export const Hero: React.FC<Props> = ({ title }) => {
+export const Hero: React.FC<Props> = ({ title, media }) => {
   return (
     <div className={styles.hero}>
       <div className={styles.videoContainer}>
-        <video
-          src='https://video.wixstatic.com/video/6da91d_1cf23ceb66ae4b758c05b25b290d5a52/1080p/mp4/file.mp4'
-          autoPlay
-          playsInline
-          muted
-          loop
-        />
+        {media.type === "video" && (
+          <video src={media.link} autoPlay playsInline muted loop />
+        )}
+        {media.type === "image" && <img src={media.link} alt={title} />}
         <div className={styles.overlay} />
       </div>
       <div className={styles.title}>
