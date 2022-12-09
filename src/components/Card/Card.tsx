@@ -1,5 +1,5 @@
 import React from "react";
-import listings from "../../data/data.json";
+
 import styles from "./Grid.module.scss";
 
 export const Grid = () => {
