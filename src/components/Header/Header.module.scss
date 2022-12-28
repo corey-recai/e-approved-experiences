@@ -7,7 +7,7 @@
   right: 0;
   margin: 0 auto;
 
-  width: 95vw;
+  width: 98vw;
   box-sizing: border-box;
   background-color: #1d1d1d;
 
@@ -38,6 +38,11 @@
           text-underline-position: under;
           text-decoration-color: red;
         }
+
+        a {
+          color: inherit;
+          text-decoration: inherit;
+        }
       }
 
       @include media-query(map-get($breakpoints, "tablet")) {
@@ -46,7 +51,6 @@
     }
 
     .web3Button {
-      display: none;
       border-radius: 2rem;
       background-color: #fff;
       padding: 1.25rem 1.5rem;

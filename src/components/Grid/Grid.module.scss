@@ -38,6 +38,10 @@
   }
 
   @include media-query(map-get($breakpoints, "tablet")) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include media-query(map-get($breakpoints, "laptop")) {
     grid-template-columns: repeat(4, 1fr);
   }
 }
