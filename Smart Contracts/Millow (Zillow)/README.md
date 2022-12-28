@@ -29,24 +29,3 @@ In a separate terminal execute:
 
 ### 7. Start frontend
 `$ npm run start`
-
-
----
-
-## Contributors
-
-Tracy Davis <TracyMDavis88@gmail.com>
-Tyler Shubert <ThinkCarbonX1@gmail.com>
-Corey Recai <CoreyRRecai@gmail.com>
-
-[Tracy Davis LinkedIn](https://www.linkedin.com/in/tracy-davis-mba-ma-2940a232/)
-
----
-
-## License
-
-MIT License
-
-Copyright (c) [2022] [Tracy Davis]
-
-
