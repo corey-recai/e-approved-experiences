@@ -1,37 +1,63 @@
-import React from "react";
-import styles from "./Header.module.scss";
-import { useEthers, useEtherBalance } from "@usedapp/core";
+import React, { useEffect, useState } from "react";
+import SignClient from "@walletconnect/sign-client";
+import { Web3Modal } from "@web3modal/standalone";
 
-// Regular import crashes the app with "Buffer is not defined" error.
-import WalletConnectProvider from "@walletconnect/web3-provider";
+import styles from "./Header.module.scss";
+
+const web3modal = new Web3Modal({
+  projectId: "d14659d55a7c0cf8badbf6b4f665aa3f",
+});
 
 const navItems = [
-  { name: "Exotic Cars", path: "exotic-cars" },
-  { name: "Luxury Yachts", path: "luxury-yachts" },
-  { name: "Luxury Villas", path: "luxury-villas" },
-  { name: "Private Jets", path: "private-jets" },
-  { name: "Other Services", path: "other-services" },
-  { name: "About Us", path: "about-us" },
-  { name: "Contact Us", path: "contact-us" },
+  { name: "Exotic Cars", path: "/" },
+  { name: "Luxury Yachts", path: "/luxury-yachts" },
+  { name: "Luxury Villas", path: "/luxury-villas" },
+  { name: "Private Jets", path: "/private-jets" },
+  { name: "Other Services", path: "/other-services" },
+  { name: "About Us", path: "/about-us" },
+  { name: "Contact Us", path: "/contact-us" },
 ];
 export const Header: React.FC = () => {
-  const { account, activate, deactivate, chainId } = useEthers();
-  const etherBalance = useEtherBalance(account);
-  // if (!config.readOnlyUrls[chainId]) {
-  //   return <p>Please use either Mainnet or Goerli testnet.</p>;
-  // }
+  const [signClient, setSignClient] = useState<SignClient | undefined>(
+    undefined
+  );
 
-  // async function onConnect() {
-  //   try {
-  //     const provider = new WalletConnectProvider({
-  //       infuraId: "d8df2cb7844e4a54ab0a782f608749dd",
-  //     });
-  //     await provider.enable();
-  //     await activate(provider);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
+  // 3. Initialize sign client
+  async function onInitializeSignClient() {
+    const client = await SignClient.init({
+      projectId: "d14659d55a7c0cf8badbf6b4f665aa3f",
+    });
+    setSignClient(client);
+  }
+
+  // 4. Initiate connection and pass pairing uri to the modal
+  async function onOpenModal() {
+    if (signClient) {
+      const namespaces = {
+        eip155: {
+          methods: ["eth_sign"],
+          chains: ["eip155:1"],
+          events: ["accountsChanged"],
+        },
+      };
+      const { uri, approval } = await signClient.connect({
+        requiredNamespaces: namespaces,
+      });
+      if (uri) {
+        web3modal.openModal({
+          uri,
+          standaloneChains: namespaces.eip155.chains,
+        });
+        await approval();
+        web3modal.closeModal();
+      }
+    }
+  }
+
+  useEffect(() => {
+    onInitializeSignClient();
+  }, []);
+
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -41,14 +67,15 @@ export const Header: React.FC = () => {
         />
         <ul className={styles.navList}>
           {navItems.map(item => {
-            return <li key={item.path}>{item.name} </li>;
+            return (
+              <li key={item.path}>
+                <a href={item.path}>{item.name}</a>
+              </li>
+            );
           })}
         </ul>
 
-        <button
-          className={styles.web3Button}
-          // onClick={onConnect}
-        >
+        <button className={styles.web3Button} onClick={onOpenModal}>
           Connect Wallet
         </button>
       </nav>
