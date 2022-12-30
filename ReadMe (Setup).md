@@ -1,4 +1,4 @@
-# Real Estate NFT DApp
+# Luxury Rental DApp
 
 ## Technology Stack & Tools
 
